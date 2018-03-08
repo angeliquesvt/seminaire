@@ -5,7 +5,9 @@
  *
  * Made By MaterializeCSS.com
  */
-
+.page-footer {
+     margin-top: 50px!important;
+   }
 nav ul a,
 nav .brand-logo {
   color: #444;
@@ -29,6 +31,36 @@ p {
     width: 100%;
   }
 
+/*DRAG N DROP*/
+
+        #sort1 .column{
+            transition: 0.3s;
+        }
+        .is-dragged{
+            opacity: 0.5;
+            z-index: 9000;
+        }
+
+        .masthead.segment {
+            padding: 2em 0em; }
+
+        .masthead .logo.item img {
+            margin-right: 1em; }
+
+        .masthead .ui.menu .ui.button {
+            margin-left: 0.5em; }
+
+        .masthead h1.ui.header {
+            padding-top: 1em;
+            margin-bottom: 0em;
+            font-size: 4em;
+            font-weight: normal; }
+
+        .masthead h2 {
+            font-size: 1.7em;
+            font-weight: normal;
+            padding-bottom: 2em;
+        }
 @media only screen and (max-width : 992px) {
   .parallax-container .section {
     position: absolute;
