@@ -18,7 +18,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <body>
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
       <ul class="right hide-on-med-and-down">
         <?php if(isset($_SESSION['email'])): ?>
         <li><a class="deco" href="./traitements/logout.php">Déconnexion</a></li>
@@ -41,6 +41,18 @@ if (session_status() == PHP_SESSION_NONE) {
       <?php endif; ?>
   </nav>
 	  <!--   Présention   -->
+
+        <?php if(isset($_SESSION['flash'])):?>
+          <?php foreach($_SESSION['flash'] as $type => $message): ?>
+            <div class="container">
+              <div class="row">
+                <div class="alert alert-<?= $type; ?>">
+                  <?= $message; ?>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
 	   <div class="container">
 		   <div class="row">
 			   <div class="col s12">
@@ -49,8 +61,8 @@ if (session_status() == PHP_SESSION_NONE) {
 			</div>
 			<div class="row">
 			   <div class="col s12">
-					<p>Mews est un site vous permettant d'avoir dans votre fils d'actualité les dernières couvertures de magazines et les dernières actualités actualités.
-					<br/>Différentes fonctionnalités sont à votre disposition pour rendre votre navigation agréable</p>
+					<p>Mews est un site vous permettant d'avoir dans votre fils d'actualité les dernières couvertures de magazines et les dernières actualités.
+					<br/>Différentes fonctionnalités sont à votre disposition pour rendre votre navigation la plus agréable possible.</p>
 				</div>
 			</div>
        </div>
@@ -71,7 +83,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <h2 class="center brown-text"><i class="material-icons">favorite</i></h2>
             <h5 class="center">Personnalisation du fil d'actualités</h5>
 
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+            <p class="light">Dans </p>
           </div>
         </div>
 
@@ -111,7 +123,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <!--  FOOTER -->
 </div>
-  <footer class="page-footer teal">
+  <footer class="page-footer blue darken-2">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">

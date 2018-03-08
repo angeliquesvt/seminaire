@@ -51,11 +51,13 @@ if (isset($email,$password))
                 session_start();
                 $_SESSION['email'] = $email;
                 $_SESSION['id_user']= $result['id_user'];
-                header('Location: ../index.php?action=connected');
+                header('Location: ../index.php');
 
             } else
             {
-                header( 'Location: ../index.php?action=fail');
+                header( 'Location: ../index.php');
+                session_start();
+                  $_SESSION ['flash']['danger']='Email ou mot de passe incorrecte';
             }
 
         }
@@ -70,7 +72,9 @@ if (isset($email,$password))
 
     else
     {
-        header( 'Location: ../index.php?action=user');
+      session_start();
+      $_SESSION ['flash']['danger']='Erreur de connection';
+        header( 'Location: ../index.php');
     }
 
 

@@ -11,7 +11,7 @@ function testEmailValidity ($email) {
     $result = $req->fetch();
     if ($result)
         return true;
-    else 
+    else
         return false;
 }
 
@@ -26,35 +26,34 @@ $password_confirm = filter_input(INPUT_POST, 'password_confirm');
 
 
 try
-{ 
+{
     $db = connectBd ();
     // Si le formulaire est envoyé
-    if (isset($_POST['submit']))  
-    {   
-        // Teste que les valeurs ne sont pas vides ou composées uniquement d'espaces  
+    if (isset($_POST['submit']))
+    {
+        // Teste que les valeurs ne sont pas vides ou composées uniquement d'espaces
         $email = trim($email) != '' ? $email : null;
         $password = trim($password) != '' ? $password : null;
-    
-        $mailValidity = testEmailValidity($email); 
-        
-        
+        $mailValidity = testEmailValidity($email);
+
+
 
         //redirige en GET si nom utilisateur existe déjà
         if ($mailValidity) {
-            header("Location: ./index.php?lol");    
+            header("Location: ./index.php");
         }
 
         //Association des éléments que l'user a entré à la BD
         else {
-            
+
             if ($password == $password_confirm)
             {
-                
+
                 // Password du form
                 $hash = hash("sha256",$password);
-                
+
                 $req = $db->prepare('INSERT INTO user(firstname, lastname, anniversary, sexe, email, password) VALUES (?,?,?,?,?,?)');
-                
+
                 $req->bindParam(1, $firstname);
                 $req->bindParam(2, $lastname);
                 $req->bindParam(3, $anniversary);
@@ -63,25 +62,28 @@ try
                 $req->bindParam(6, $hash);
 
                 $req->execute();
-               
+
                 if($req)
                 {
                     if (!session_id())
                     {
                         //Cookie
                         session_start();
-                        setcookie('email', $_POST['email'], time() + 365*24*3600, null, null, false, true); 
-                        header( 'Location: ../index.php?action=register');
-                    } 
-                        
-                   
-                }                
+                        $_SESSION ['flash']['success']='Vous êtes bien inscriT sur notre site! Vous pouvez maintenant vous connecter!';
+                        setcookie('email', $_POST['email'], time() + 365*24*3600, null, null, false, true);
+                        header( 'Location: ../index.php');
+                    }
+
+
+                }
             }
             else
             {
-                header( 'Location: ../index.php?action=wrongMDP');
+              session_start();
+              $_SESSION ['flash']['danger']="Un problème est survenue lors de l'inscription";
+                header( 'Location: ../index.php');
             }
-            
+
         }
     }
 
