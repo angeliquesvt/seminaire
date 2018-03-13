@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/model/flux.class.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/model/connexion.php';
@@ -9,7 +9,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 class ControllerFlux{
-  
+
     private $_articlesController;
 
     public function __construct() {
@@ -52,8 +52,8 @@ class ControllerFlux{
         $db = connectBd();
         $req = $db->prepare("SELECT flux.*,categorie.* FROM flux JOIN cat_flux ON cat_flux.id_flux=flux.id_flux JOIN categorie ON categorie.id_cat=cat_flux.id_cat");
         $req->execute();
-        
-        while($data = $req->fetch(PDO::FETCH_ASSOC)) 
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC))
         {
                 $flux = new Flux($data['id_flux'],$data['titre'],$data['url'],$data['type'],$data['uri']);
                 $list[$data['uri']]=$flux;
@@ -63,7 +63,7 @@ class ControllerFlux{
                 $flux->category=new Categorie($data['id_cat'],$data['nom_cat']);
 
                 if (in_array($data['uri'],$this->getAllActifFluxURI()))
-                {   
+                {
                     $flux->actif=true;
                 }
         }
@@ -78,15 +78,15 @@ class ControllerFlux{
         $req = $db->prepare("SELECT flux.*,categorie.* FROM flux_user JOIN flux ON flux.id_flux=flux_user.id_flux JOIN cat_flux ON cat_flux.id_flux=flux.id_flux JOIN categorie ON categorie.id_cat=cat_flux.id_cat WHERE id_user=:id");
         $req->bindParam("id",$_SESSION["id_user"]);
         $req->execute();
-       
-        while($data = $req->fetch(PDO::FETCH_ASSOC)) 
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC))
         {
                 $flux = new Flux($data['id_flux'],$data['titre'],$data['url'],$data['type'],$data['uri']);
                 $list[$data['uri']]=$flux;
 
-              
+
                 //array_push($list,$flux);
-                
+
                 $flux->langue=$data['langue'];
                 $flux->category=new Categorie($data['id_cat'],$data['nom_cat']);
                 $flux->actif=true;
@@ -102,8 +102,8 @@ class ControllerFlux{
         $req = $db->prepare("SELECT uri FROM flux_user JOIN flux ON flux.id_flux=flux_user.id_flux WHERE id_user=:id");
         $req->bindParam("id",$_SESSION["id_user"]);
         $req->execute();
-        
-        while($data = $req->fetch(PDO::FETCH_ASSOC)) 
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC))
         {
                 array_push($list,$data['uri']);
         }
@@ -123,7 +123,7 @@ class ControllerFlux{
         if($data = $req->fetch(PDO::FETCH_ASSOC))
         {
             $flux = new Flux($data['id_flux'],$data['titre'],$data['url'],$data['type'],$data['uri']);
-            
+
                 /*$flux->langue=$data['langue'];
                 $flux->cat=new Categorie($data['id_cat'],$data['cat']);*/
         }
@@ -153,7 +153,7 @@ class ControllerFlux{
 
             return $flux;
         }
-        
+
         return null;
     }
 
@@ -171,7 +171,9 @@ class ControllerFlux{
             $req->execute();
         }
     }
-   
+
+
+  //  SELECT mot_clef FROM mot_clef INNER JOIN fav_mot_clef ON mot_clef.id_mot_clef = fav_mot_clef.id_mot_clef GROUP BY mot_clef ORDER BY COUNT(*) DESC LIMIT 1
 }
 
 ?>

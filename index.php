@@ -49,17 +49,30 @@ if (session_status() == PHP_SESSION_NONE) {
   </nav>
 	  <!--   Présention   -->
 
-        <?php if(isset($_SESSION['flash'])):?>
-          <?php foreach($_SESSION['flash'] as $type => $message): ?>
-            <div class="container">
-              <div class="row">
-                <div class="alert alert-<?= $type; ?>">
-                  <?= $message; ?>
-                </div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        <?php endif; ?>
+    <!-- ERROR MESSAGES -->
+     <?php if(isset($_SESSION['flash'])):?>
+       <?php foreach ($_SESSION['flash'] as $type => $message):
+         unset($_SESSION['flash']);?>
+         <div class="alert alert-<?= $type; ?>">
+           <?= $message; ?>
+         </div>
+
+       <?php endforeach; ?>
+     <?php endif; ?>
+
+       <?php if(isset($_SESSION['flash'])):?>
+         <?php foreach($_SESSION['flash'] as $type => $message): ?>
+           <div class="container">
+             <div class="row">
+               <div class="alert alert-<?= $type; ?>">
+                 <?= $message; ?>
+               </div>
+             </div>
+           </div>
+         <?php endforeach; ?>
+       <?php endif; ?>
+
+
 	   <div class="container">
 		   <div class="row">
 			   <div class="col s12">
