@@ -50,7 +50,8 @@ if (isset($email,$password))
                 if (!session_id())
                 session_start();
                 $_SESSION['email'] = $email;
-                $_SESSION['firstname'] = $firstname;
+                $_SESSION['firstname'] = $result['lastname'];
+                $_SESSION['firstname'] = $result['firstname'];
                 $_SESSION['id_user']= $result['id_user'];
                 $_SESSION["articles"]["articles"]=array();
                 header('Location: ../index.php');

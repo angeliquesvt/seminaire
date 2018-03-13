@@ -31,7 +31,7 @@ $articlesController = new ControllerArticles();
             include($_SERVER['DOCUMENT_ROOT']. '/seminaire/articlesView.php');
         }
     }
-    
+
     //POST
     else if(isset($_POST['flux']) && isset($_POST['action']))
     {
@@ -56,7 +56,7 @@ $articlesController = new ControllerArticles();
                 header(':', true, 404);
                 header('X-PHP-Response-Code: 404', true, 404);
             }
-           
+
         }
 }
 ?>

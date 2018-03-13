@@ -1,5 +1,4 @@
 <?php
-
 require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/controller/controllerFlux.php';
 
 
@@ -14,7 +13,6 @@ if (!isset($_SESSION['email'])) {
  if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
-
 $flux_list = (new ControllerFlux())->getAllActifFlux();
 
 ?>
@@ -24,7 +22,15 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Mews</title>
-
+<style>
+.table-of-contents a.active {
+  border-left: 2px solid #1976D2!important;
+}
+nav .nav-wrapper img{
+  margin-left: 10px;
+  margin-top: 3px;
+}
+</style>
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
@@ -32,25 +38,41 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
   <script src="./js/affichageArticles.js"></script>
+  <link rel="icon" type="image/png" href="img/logo/fav.ico" />
 </head>
 <body>
-  <nav class="white" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="./index.php" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
-      <ul class="right hide-on-med-and-down">
-      <li><a class="page" href="./index.php"><i class="material-icons" style="color:black;">home</i></a></li>
-        <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
-        <li><a class="page" href="./favori.php">Mes favoris</a></li>
-
-              </ul>
-        <ul id="nav-mobile" class="side-nav">
-            <li><a class="page" href="./favori.php">Accueil</a></li>
-            <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
-        		<li><a href="./model/logout.php">Déconnexion</a></li>
+  <div class="navbar-fixed">
+    <nav class="white">
+      <div class="nav-wrapper">
+        <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a class="page" href="./index.php"><i class="material-icons" style="color:black;">home</i></a></li>
+          <li><a class="page" href="./favori.php">Mes favoris</a></li>
+          <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
         </ul>
+      </div>
+    </nav>
+  </div>
+  <ul id="nav-mobile" class="side-nav">
+    <li><a class="page" href="./index.php"><i class="material-icons" style="color:black;">home</i></a></li>
+    <li><a class="page" href="./favori.php">Mes favoris</a></li>
+      <li><a href="./model/logout.php">Déconnexion</a></li>
+  </ul>
 
-  </nav>
+
 	  <!--   Présention   -->
+
+    <!-- ERROR MESSAGES -->
+     <?php if(isset($_SESSION['flash'])):?>
+       <?php foreach ($_SESSION['flash'] as $type => $message):
+         unset($_SESSION['flash']);?>
+         <div class="alert alert-<?= $type; ?>">
+           <?= $message; ?>
+         </div>
+
+       <?php endforeach; ?>
+     <?php endif; ?>
 
         <?php if(isset($_SESSION['flash'])):?>
           <?php foreach($_SESSION['flash'] as $type => $message): ?>
@@ -64,17 +86,15 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
           <?php endforeach; ?>
         <?php endif; ?>
 
-
-   
-	   <div class="container">
+	   <div class="container" style="margin-top: 20px;">
 		   <div class="row">
 			   <div class="col s12 m9">
-					<h4 class="left">Fil d'actualité de  <?php print_r($_SESSION['email']); ?></h1>
+					<h4 class="left">Fil d'actualité de  <?php print_r($_SESSION['firstname']); ?></h1>
         </div>
-        
+
 
       </div>
-          
+
 
       <a class="waves-effect waves-light btn teal lighten-2 modal-trigger" href="#modal1"><img src="./img/engrenage.png" id="engrenage"/></a>
 
@@ -90,22 +110,22 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
               <div class="Switch Round">
                 <div class="Toggle"></div>
               </div>
-              </li> 
+              </li>
             </ul>
           </div>
         </div>
         <div class="modal-footer">
           <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Merci</a>
         </div>
-      </div>  
-      
+      </div>
+
             <!-- Modal Structure -->
             <div id="modal2" class="modal">
         <div class="modal-content">
           <h4>Mots clef</h4>
           <form>
           <label for="keywords">Mots clef (séparés par des virgules)</label>
-          <input type="text" name="keywords" id="keywords"/>            
+          <input type="text" name="keywords" id="keywords"/>
           </form>
         </div>
         <div class="modal-footer">
@@ -114,7 +134,7 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
       </div>
 
       <div class="row">
-        <div class="col s12 m7">
+        <div class="col s12 m8 l8">
       <div class="flux_list">
       <?php
       $flux_list = (new ControllerFlux())->getAllActifFlux();
@@ -126,27 +146,41 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
       ?>
       </div>
       </div>
-      </div>
-
-      <div class="col hide-on-small-only m3 l2" style="float:right;">
-          <div class="toc-wrapper pinned" style="top: 100px;">
-            <div class="buysellads hide-on-small-only">
-              <h1>TREND</h1>
-            </div>
-            <div style="height: 1px;">
-              <ul class="section table-of-contents">
-                <li><a href="#basic" class="active">Carte basique</a></li>
-                <li><a href="#image" class="">Carte image</a></li>
-                <li><a href="#reveal" class="">Card Reveal</a></li>
-                <li><a href="#sizes" class="">Card Sizes</a></li>
-                <li><a href="#panel" class="">Card Panel</a></li>
-              </ul>
+        <div class="col hide-on-small-only m3 l3" style="float:right;">
+            <div class="toc-wrapper pinned" style="top: 100px;">
+              <div class="buysellads hide-on-small-only">
+                <h6>Mots clefs</h6>
+              </div>
+              <div style="height: 1px;">
+                <ul class="section table-of-contents">
+                  <?php $flux = (new ControllerFlux())->getMotclef();
+                 foreach ($flux as $key): ?>
+                  <li><a href="#basic" class="active"><?php echo $key; ?></a></li>
+              <?php endforeach; ?>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="col hide-on-small-only m2 l3" style="float:right;">
+            <div class="toc-wrapper pinned" style="top: 100px;">
+              <div class="buysellads hide-on-small-only">
+                <h6>Top articles</h6>
+              </div>
+              <div style="height: 1px;">
+                <ul class="section table-of-contents">
+                  <?php $flux = (new ControllerFlux())->getFavoriteArticle();
+                 foreach ($flux as $key): ?>
+                  <li><a href="#basic" class="active"><?php echo $key; ?></a></li>
+              <?php endforeach; ?>
+                </ul>
+              </div>
+            </div>
+          </div>
   </div>
 
-  
+
 
   <footer class="page-footer blue darken-2">
     <div class="container">
@@ -172,7 +206,7 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
 
       </div>
     </div>
-  </footer> 
+  </footer>
 
   <!--  Scripts-->
 
@@ -190,8 +224,10 @@ $flux_list = (new ControllerFlux())->getAllActifFlux();
       endingTop: '10%', // Ending top style attribute
     }
   );
+
+  $(".button-collapse").sideNav();
 });
-      
+
 	</script>
 	<script>
 	  $('.datepicker').pickadate({

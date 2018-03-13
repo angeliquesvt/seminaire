@@ -62,20 +62,21 @@ try
                 $req->bindParam(5, $email);
                 $req->bindParam(6, $hash);
 
-                $req->execute();     
+                $req->execute();
 
                 if($req)
                 {
                     if (session_status() == PHP_SESSION_NONE) {
                         session_start();
                      }
-                        $_SESSION ['flash']['success']='Vous êtes bien inscriT sur notre site! Vous pouvez maintenant vous connecter!';
+                        $_SESSION ['flash']['success']='Bienvenue sur Mews!';
                         $_SESSION['firstname'] = $firstname;
+                        $_SESSION['lastname'] = $lastname;
                         $_SESSION['email'] = $email;
                         $_SESSION['id_user']= $db->lastInsertId();
                         $_SESSION["articles"]["articles"]=array();
                         $flux_list = (new ControllerFlux())->addDefaultFlux();
-                        
+
                         setcookie('email', $_POST['email'], time() + 365*24*3600, null, null, false, true);
                         header( 'Location: ../page.php');
                 }

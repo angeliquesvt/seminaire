@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/model/article.class.php';
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -6,7 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 class ControllerArticles{
-  
+
 public function archiverArticle($uniq,$keywords)
 {
     if(isset($_SESSION['articles'][$uniq]))
@@ -17,10 +17,11 @@ public function archiverArticle($uniq,$keywords)
         $req = $db->prepare("SELECT * FROM article WHERE url=:url");
         $req->bindParam(":url",$article->url);
         $req->execute();
-        
+
         $id = null;
 
         $fetch = $req->fetch(PDO::FETCH_ASSOC);
+        //$article->id_flux=$flux->id;
 
         if(!$fetch)
         {
@@ -46,7 +47,7 @@ public function archiverArticle($uniq,$keywords)
         $req2->execute();
 
         $id_fav=$db->lastInsertId();
-        
+
         foreach($keywords as $keyword)
         {
             $id_keyword = null;
@@ -69,7 +70,7 @@ public function archiverArticle($uniq,$keywords)
             {
                 $id_keyword=$fetch['id_mot_clef'];
             }
-            
+
             $req3= $db->prepare("INSERT INTO fav_mot_clef(id_favori,id_mot_clef) VALUES (?,?)");
             $req3->bindParam(1,$id_fav);
             $req3->bindParam(2, $id_keyword);
@@ -104,8 +105,8 @@ public function isArticleFav($url)
       {
           $url = $flux->url;
           $var = file_get_contents($url); // contenu dans variable
-          $result = json_decode($var, true); // décoder le JSON en Array       
-  
+          $result = json_decode($var, true); // décoder le JSON en Array
+
           foreach ($result["articles"] as $articleNode)
           {
               $article = new Article($articleNode["title"],$articleNode["description"],$articleNode["url"]);
@@ -124,9 +125,9 @@ public function isArticleFav($url)
       {
           $url = $flux->url;
           $xml = simpleXML_load_file($url,"SimpleXMLElement",LIBXML_NOCDATA);
-      
+
            //Articles
-      
+
            foreach($xml->channel->item as $valeur)
            {
               $article = new Article(
@@ -143,7 +144,7 @@ public function isArticleFav($url)
               $_SESSION["articles"][$uniq]=$article;
               $article->uniq = $uniq;
               $article->fav = $this->isArticleFav($article->url);
-           }  
+           }
       }
 
       return $articles;

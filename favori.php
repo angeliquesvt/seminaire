@@ -19,74 +19,30 @@ if (session_status() == PHP_SESSION_NONE) {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link rel="icon" type="image/png" href="img/logo/fav.ico" />
 
 </head>
 <body>
-  <nav class="white" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
-      <ul class="right hide-on-med-and-down">
-        <?php if(isset($_SESSION['email'])): ?>
-        <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
-              </ul>
-        <ul id="nav-mobile" class="side-nav">
-        		<li><a href="./model/logout.php">Déconnexion</a></li>
-        </ul>
-				<?php else: ?>
-   <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
-        <li><a class="modal-trigger" href="#modalConnexion">Connexion</a></li>
-      </ul>
-
-      <ul id="nav-mobile" class="side-nav">
-		<li><a href="#modalInscription">Inscription</a></li>
-        <li><a href="#modalConnexion">Connexion</a></li>
-      </ul>
-
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    </div>
-      <?php endif; ?>
-  </nav>
-
-
-  <div class="container">
-		<div class="row">
-      <?php     
-      try{   
-      $db = connectBd();
-        $req = $db->prepare("SELECT * FROM favori JOIN article ON article.id_article=favori.id_article JOIN flux ON flux.id_flux=article.id_flux WHERE id_user=:id");
-        $req->bindParam("id",$_SESSION["id_user"]);
-        $req->execute();
-
-          while( $article = $req->fetch(PDO::FETCH_ASSOC))
-          {
-            $image = ($article['urlToImage']);
-            $a = $article['titre'];
-            if ($a!=null){
-              echo "<h3>{$a}</h3>";
-            }
- 
-            if ($image!=null){
-              echo "<img src={$image}/>";
-            }
-          
-           
-          
-          }
-
-          
-        }
-    catch (Exception $e)
-    {
-      $e->getMessage();
-      echo $e;        
-    } ?>
-
-      
+  <div class="navbar-fixed">
+    <nav class="white">
+      <div class="nav-wrapper">
+        <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a class="page" href="./index.php"><i class="material-icons" style="color:black;">home</i></a></li>
+          <li><a class="page" href="./page.php">Fil d'actualité</a></li>
+            <li><a href="./model/logout.php">Déconnexion</a></li>
+          </ul>
       </div>
+    </nav>
+  </div>
+<ul id="nav-mobile" class="side-nav">
+  <li><a class="page" href="./index.php"><i class="material-icons" style="color:black;">home</i></a></li>
+  <li><a class="page" href="./page.php">Fil d'actualité</a></li>
+    <li><a href="./model/logout.php">Déconnexion</a></li>
+</ul>
 
-
-
-
+ <?php require_once "favoriteView.php"; ?>
   <div class="col hide-on-small-only m3 l2" style="float:right;">
           <div class="toc-wrapper pinned" style="top: 100px;">
             <div class="buysellads hide-on-small-only">
@@ -106,8 +62,6 @@ if (session_status() == PHP_SESSION_NONE) {
   </div>
 	</div>
 
-
-  
 <!--  FOOTER -->
 
   <footer class="page-footer blue darken-2">
@@ -140,5 +94,22 @@ if (session_status() == PHP_SESSION_NONE) {
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script>
+	  $(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+    }
+  );
+
+  $(".button-collapse").sideNav();
+});
+
+	</script>
   </body>
 </html>

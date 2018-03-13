@@ -172,6 +172,33 @@ class ControllerFlux{
         }
     }
 
+    public function getMotclef(){
+      $db = connectBd();
+      $list = array();
+      $req= $db->prepare("SELECT mot_clef FROM mot_clef GROUP BY mot_clef ORDER BY COUNT(*) DESC LIMIT 10");
+      $req->execute();
+      while($keyword = $req->fetch(PDO::FETCH_ASSOC)){
+      $data = $keyword['mot_clef'];
+      array_push($list,$data);
+    }
+
+      return $list;
+    }
+
+    public function getFavoriteArticle(){
+      $db = connectBd();
+      $list = array();
+      $req= $db->prepare("SELECT titre FROM article INNER JOIN favori ON article.id_article = favori.id_article GROUP BY favori.id_article ORDER BY COUNT(favori.id_article) DESC LIMIT 10");
+      $req->execute();
+      while($favArticle = $req->fetch(PDO::FETCH_ASSOC)){
+      $data = $favArticle['titre'];
+      array_push($list,$data);
+    }
+
+      return $list;
+    }
+
+//SELECT titre FROM article INNER JOIN favori ON article.id_article = favori.id_article GROUP BY favori.id_article ORDER BY COUNT(favori.id_article) DESC LIMIT 10
 
   //  SELECT mot_clef FROM mot_clef INNER JOIN fav_mot_clef ON mot_clef.id_mot_clef = fav_mot_clef.id_mot_clef GROUP BY mot_clef ORDER BY COUNT(*) DESC LIMIT 1
 }
