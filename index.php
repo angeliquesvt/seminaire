@@ -1,7 +1,12 @@
 <?php
+
+require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/controller/controllerFlux.php';
+
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,17 +19,19 @@ if (session_status() == PHP_SESSION_NONE) {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
 </head>
 <body>
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
       <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
       <ul class="right hide-on-med-and-down">
-        <?php if(isset($_SESSION['email'])): ?>
-        <li><a class="deco" href="./traitements/logout.php">Déconnexion</a></li>
+        <?php if(isset($_SESSION['email'])):
+           header( 'Location: ./page.php'); ?>
+        <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
               </ul>
         <ul id="nav-mobile" class="side-nav">
-        		<li><a href="./traitement/logout.php">Déconnexion</a></li>
+        		<li><a href="./model/logout.php">Déconnexion</a></li>
         </ul>
 				<?php else: ?>
    <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
@@ -156,7 +163,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="modal-content">
       <h4>Inscription</h4>
       <div class="row">
-       <form class="col s12" action="./traitements/traitementRegister.php" method="POST">
+       <form class="col s12" action="./model/traitementRegister.php" method="POST">
 		 <div class="row">
 			<div class="input-field col s6">
                <label for="">PRÉNOM</label>
@@ -234,7 +241,7 @@ if(@$_GET['action'] == 'wrongMDP' ) {
     <div class="modal-content">
       <h4>Connexion</h4>
       <div class="row">
-       <form class="col s12" action="./traitements/traitementLogin.php" method="POST">
+       <form class="col s12" action="./model/traitementLogin.php" method="POST">
 		 <div class="row">
 			<div class="input-field col s12">
                 <label for="">Email</label>
