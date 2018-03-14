@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/controller/controllerFlux.php';
+//require_once $_SERVER['DOCUMENT_ROOT']. '/seminaire/localization.php';
 
 if (session_status() == PHP_SESSION_NONE) {
    session_start();
@@ -9,7 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -19,37 +20,57 @@ if (session_status() == PHP_SESSION_NONE) {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link rel="icon" type="image/png" href="img/logo/fav.ico" />
-
+  <link type="text/css" rel="stylesheet" href="css/font-awesome.css"/>
+  <link rel="icon" type="image/png" href="img/logo/fav.ico"/>
+  <style>
+    .social-footer{
+      float: left;
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
-  <nav class="white" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
-      <ul class="right hide-on-med-and-down">
-        <?php if(isset($_SESSION['email'])):
-           header( 'Location: ./page.php'); ?>
-        <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
-              </ul>
-        <ul id="nav-mobile" class="side-nav">
-        		<li><a href="./model/logout.php">Déconnexion</a></li>
+  <div class="navbar-fixed">
+    <nav class="white">
+      <div class="nav-wrapper">
+        <a id="logo-container" href="#" class="brand-logo"><img src="img/logo/logo.png" width="190px" height="auto" /></a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <?php if(isset($_SESSION['email'])):?>
+            <li><a href="./page.php">Fil d'actualités</a></li>
+            <li><a href="./favori.php">Favori</a></li>
+            <li><a class="deco" href="./model/logout.php">Déconnexion</a></li>
+          </ul>
+        <?php else: ?>
+          <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
+          <li><a class="modal-trigger" href="#modalConnexion">Connexion</a></li>
         </ul>
-				<?php else: ?>
-   <li><a class="modal-trigger" href="#modalInscription">Inscription</a></li>
-        <li><a class="modal-trigger" href="#modalConnexion">Connexion</a></li>
-      </ul>
 
-      <ul id="nav-mobile" class="side-nav">
-		<li><a href="#modalInscription">Inscription</a></li>
-        <li><a href="#modalConnexion">Connexion</a></li>
-      </ul>
 
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    </div>
-      <?php endif; ?>
+
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    <?php endif; ?>
   </nav>
-	  <!--   Présention   -->
+</div>
 
+<?php if(isset($_SESSION['email'])):?>
+
+<ul id="nav-mobile" class="side-nav">
+  <li><a href="./page.php">Fil d'actualités</a></li>
+  <li><a href="./favori.php">Favori</a></li>
+  <li><a href="./model/logout.php">Déconnexion</a></li>
+</ul>
+<?php else: ?>
+
+<ul id="nav-mobile" class="side-nav">
+  <li><a href="#modalInscription">Inscription</a></li>
+  <li><a href="#modalConnexion">Connexion</a></li>
+</ul>
+<?php endif; ?>
+	  <!--   Présentation   -->
+
+        
     <!-- ERROR MESSAGES -->
      <?php if(isset($_SESSION['flash'])):?>
        <?php foreach ($_SESSION['flash'] as $type => $message):
@@ -71,7 +92,7 @@ if (session_status() == PHP_SESSION_NONE) {
              </div>
            </div>
          <?php endforeach; ?>
-       <?php endif; ?>
+      <?php endif; ?>
 
 
 	   <div class="container">
@@ -83,7 +104,11 @@ if (session_status() == PHP_SESSION_NONE) {
 			<div class="row">
 			   <div class="col s12">
 					<p>Mews est un site vous permettant d'avoir dans votre fils d'actualité les dernières couvertures de magazines et les dernières actualités.
-					<br/>Différentes fonctionnalités sont à votre disposition pour rendre votre navigation la plus agréable possible.</p>
+          <br/>Mews a été développé par l’équipe internationale MTeam. 
+          9 jeunes passionnés par le web et l’actualités. 
+          Infographistes, développeurs web et communicants travaillent ensemble afin de vous offrir un service de qualité. 
+          Dynamisme, créativité et qualité sont au coeur de notre projet ! 
+</p>
 				</div>
 			</div>
        </div>
@@ -93,27 +118,30 @@ if (session_status() == PHP_SESSION_NONE) {
       <div class="row">
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">autorenew</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">autorenew</i></h2>
             <h5 class="center">Des nouvelles en temps réel</h5>
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+            <p class="light">Plus besoin de rechercher les actualités sur différents sites
+avec Mews vous pouvez suivez l’actualité en temps réel et n’importe où dans le monde.  De même une simple recherche peut vous permettre de trouver l’article que vous cherchez.  
+</p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">favorite</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">favorite</i></h2>
             <h5 class="center">Personnalisation du fil d'actualités</h5>
 
-            <p class="light">Dans </p>
+            <p class="light">Vous en avez assez de voir des informations qui ne vous sont pas utiles ? Grâce aux paramètres vous pouvez choisir les sujets qui vous intéressent afin d’avoir uniquement ces informations sur votre fil d’actualité.</p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">fiber_new</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">fiber_new</i></h2>
             <h5 class="center">Les articles les plus populaires</h5>
 
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+            <p class="light">Grâce à l’outil favoris vous pouvez voir les informations mis en avant par les différents utilisateurs, il vous permettra de voir les actualités les plus tendances !
+</p>
           </div>
         </div>
       </div>
@@ -123,13 +151,14 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <!--  VIDEO -->
 	<div class="container">
-		<div class="row">
-			<div class="video-container">
-				<iframe width="853" height="480" src="www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0" allowfullscreen></iframe>
-			</div>
+		<div class="row" style="text-align:center;">
+    <video class="responsive-video" controls>
+    <source src="./src/video.mp4" type="video/mp4">
+    </video>
 		</div>
 		<div class="row">
-			<p>Explication de la video</p>
+			<p>Le but de notre vidéo est de promouvoir notre site web, le rendre visible au grand public. Dans cette vidéo nous expliquons que nous vivons dans un monde rempli d’informations et que la plupart des informations que nous consultons ne nous intéressent  pas c’est pour cela que le projet Mews prend vie grâce à ce site web vous pouvez choisir les sujets qui vous intéressent afin d’avoir uniquement des informations des sujets qui nous intéressent . 
+</p>
 		</div>
 	</div>
 
@@ -137,28 +166,57 @@ if (session_status() == PHP_SESSION_NONE) {
 	   <div class="container">
 		   <div class="row">
 			   <div class="col s12">
-					<h4 class="left">Revue de presse</h1>
+          <h3>Revue de presse</h3>
+          <p style="font-size:13pt;">Aujourd’hui, nous sommes le 8 Mars 2018 soit la Journée Internationale des Droits des Femmes. C’est l’occasion pour nous, rédacteurs de Mews, de faire un tour du monde rapide. 
+       </p>
+       <a class="btn waves-effect waves-light blue" type="submit" name="action" target="_blank" href="./src/revue.pdf">Lire la suite (télécharger le PDF)
+    <i class="material-icons right">send</i>
+       </a>
 				</div>
 			</div>
        </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+      <h3>Annexes</h3>
+      <h5>Cahier des charges</h5>
+      <a class="btn-floating btn-large waves-effect waves-light blue" href="./src/cdcf.pdf" target="_blank"><i class="material-icons">attach_file</i></a>
+      </div>
+    </div>
+  </div>
+
+    <div class="container">
+    <div class="row">
+      <div class="col s12">
+      <h5>Charte graphique</h5>
+      <a class="btn-floating btn-large waves-effect waves-light blue" href="./src/charte.pdf" target="_blank"><i class="material-icons">attach_file</i></a>
+      </div>
+    </div>
+  </div>
+
 
 <!--  FOOTER -->
 </div>
   <footer class="page-footer blue darken-2">
     <div class="container">
       <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-        </div>
 
+        <div class="col l6 s12">
+            <h5 class="white-text">Réseaux sociaux</h5>
+            <ul>
+                <li class="social-footer"><a href="https://www.facebook.com/MewsTeam/?hc_ref=ARROciI1DEdfsZ-LjIlr1VHrxj88BLI1plRKAXzn3IHOMF7-i7O5fSXCtJfS3s5V1vc&fref=nf" target="_blank"><i style='color:white;' class="socialfoot fa fa-facebook-square fa-3x" aria-hidden="true"></i></a></li>
+                <li class="social-footer"><a href="https://twitter.com/wearemews?lang=fr" target="_blank"> <i style='color:white;' class="socialfoot fa fa-twitter-square fa-3x" aria-hidden="true"></i></a></li>
+                <li class="social-footer"><a href="https://www.linkedin.com/in/mews-team-9b240115b/" target="_blank"> <i style='color:white;' class="socialfoot fa fa-linkedin-square fa-3x" aria-hidden="true"></i></a></li>
+              </ul>
+          </div>
         <div class="col l3 s12 right">
           <h5 class="white-text">Liens</h5>
           <ul>
-            <li><a class="white-text" href="pages/apropos.html">A propos</a></li>
-            <li><a class="white-text" href="pages/FAQ.html">FAQ</a></li>
-            <li><a class="white-text" href="pages/mentionslegales.html">Mentions légales</a></li>
-            <li><a class="white-text" href="pages/conditions.html">Conditions générales d'Utilisation</a></li>
+            <li><a class="white-text" href="pages/apropos.php">A propos</a></li>
+            <li><a class="white-text" href="pages/FAQ.php">FAQ</a></li>
+            <li><a class="white-text" href="pages/mentionslegales.php">Mentions légales</a></li>
+            <li><a class="white-text" href="pages/conditions.php">Conditions générales d'Utilisation</a></li>
           </ul>
         </div>
       </div>
@@ -264,7 +322,7 @@ if(@$_GET['action'] == 'wrongMDP' ) {
           </div>
           <div class="row">
 			<div class="input-field col s12">
-                  <label for="">Mot de passe <a href="remember.php">(Mot de passe oublié)</a></label>
+            <label for="">Mot de passe <a href="remember.php">(Mot de passe oublié)</a></label>
 				<input type="password" name="password" />
 				</div>
               </div>
